@@ -65,8 +65,9 @@ body::after{
 .spine span{
   font-family:var(--disp);font-weight:700;font-size:1.05rem;letter-spacing:.05em;
   color:var(--taupe);line-height:1;
+  transition:color .4s ease,transform .4s ease;
 }
-.spine span.o{color:var(--gold)}
+.spine span.lit{color:var(--gold-2);transform:scale(1.35)}
 .spine::before,.spine::after{
   content:"";width:1px;flex:0 0 42px;background:var(--line-gold);
 }
@@ -108,8 +109,7 @@ nav a.lnk:hover{color:var(--gold-2)}
   pointer-events:none;
 }
 .hero-inner{position:relative;z-index:2}
-.hero .eyebrow{display:flex;align-items:center;gap:1rem;margin-bottom:2.2rem}
-.hero .eyebrow::before{content:"";width:46px;height:1px;background:var(--gold)}
+.hero .eyebrow{display:flex;align-items:center;gap:1.6rem;margin-bottom:2.2rem}
 h1{
   font-family:var(--disp);font-weight:900;text-transform:uppercase;
   font-size:clamp(3.4rem,11vw,9.5rem);
@@ -285,7 +285,7 @@ footer .links{display:flex;gap:1.8rem}
 
 <!-- SPINE — l'empreinte du dos du hoodie -->
 <aside class="spine" aria-hidden="true">
-  <span>F</span><span class="o">O</span><span>R</span><span>E</span><span>I</span><span>G</span><span>N</span><span>E</span><span>R</span><span>S</span>
+  <span>F</span><span>O</span><span>R</span><span>E</span><span>I</span><span>G</span><span>N</span><span>E</span><span>R</span><span>S</span>
 </aside>
 
 <header>
@@ -328,10 +328,10 @@ footer .links{display:flex;gap:1.8rem}
 <section class="hero">
   <svg class="falcon-bg" viewBox="705 795 620 410" aria-hidden="true"><use href="#falcon"/></svg>
   <div class="wrap hero-inner">
-    <p class="eyebrow mono">Clothing brand · <b>Family Over Worries</b></p>
+    <p class="eyebrow mono"><span>Clothing brand</span> <b>Family Over Worries</b></p>
     <h1>Every<br><span class="hollow">foreigner</span><br>belongs here<span class="dot">.</span></h1>
     <p class="lead">
-      FOREIGNERS dresses those who come from somewhere else — and are building here.
+      FOREIGNERS dresses those who come from somewhere else and are building here.
       <strong>50% of our profits</strong> go to organizations that support newcomers.
       You wear the piece, the family moves forward.
     </p>
@@ -340,7 +340,7 @@ footer .links{display:flex;gap:1.8rem}
       <button class="btn" type="submit">Get drop access</button>
     </form>
     <p class="form-ok" data-ok>✓ Welcome to the family. You'll hear from us first.</p>
-    <p class="capture-note mono">First drop · limited pieces · zero spam</p>
+    <p class="capture-note mono">First drop, limited pieces, zero spam</p>
   </div>
 </section>
 
@@ -386,15 +386,15 @@ footer .links{display:flex;gap:1.8rem}
         </p>
         <p>
           FOREIGNERS was born from that: a brand for those who come from somewhere else
-          and no longer have to apologize for being here. Not a trend — a belonging.
+          and no longer have to apologize for being here. Not a trend. A belonging.
         </p>
         <p>
-          <strong>FOW — Family Over Worries.</strong> It's embroidered on the sleeve, and
+          <strong>FOW: Family Over Worries.</strong> It's embroidered on the sleeve, and
           stitched into the model: half of what we earn goes back to those who arrive.
         </p>
         <div class="sig">
           <svg viewBox="705 795 620 410" aria-hidden="true"><use href="#falcon"/></svg>
-          <span class="mono">FGN · founded by foreigners, for foreigners</span>
+          <span class="mono">founded by foreigners, for foreigners</span>
         </div>
       </div>
     </div>
@@ -406,7 +406,7 @@ footer .links{display:flex;gap:1.8rem}
   <div class="wrap">
     <div class="sec-head rv">
       <h2>The first <span class="g">drop</span></h2>
-      <p class="mono">4 pieces · limited run · <b>coming soon</b></p>
+      <p class="mono">4 pieces, limited run, <b>coming soon</b></p>
     </div>
     <div class="grid">
       <article class="card rv">
@@ -416,8 +416,8 @@ footer .links{display:flex;gap:1.8rem}
         </div>
         <div class="info">
           <h3>Night Hoodie</h3>
-          <p>Gold embroidered swift · wordmark on the back</p>
-          <p class="st">Drop 001 — coming soon</p>
+          <p>Gold embroidered swift, wordmark on the back</p>
+          <p class="st">Drop 001 coming soon</p>
         </div>
       </article>
       <article class="card rv" style="transition-delay:.08s">
@@ -428,7 +428,7 @@ footer .links{display:flex;gap:1.8rem}
         <div class="info">
           <h3>Sand Hoodie</h3>
           <p>"Family Over Worries" on the sleeve</p>
-          <p class="st">Drop 001 — coming soon</p>
+          <p class="st">Drop 001 coming soon</p>
         </div>
       </article>
       <article class="card rv" style="transition-delay:.16s">
@@ -438,8 +438,8 @@ footer .links{display:flex;gap:1.8rem}
         </div>
         <div class="info">
           <h3>Night Sweatpants</h3>
-          <p>Relaxed fit · swift at the hip</p>
-          <p class="st">Drop 001 — coming soon</p>
+          <p>Relaxed fit, swift at the hip</p>
+          <p class="st">Drop 001 coming soon</p>
         </div>
       </article>
       <article class="card rv" style="transition-delay:.24s">
@@ -449,8 +449,8 @@ footer .links{display:flex;gap:1.8rem}
         </div>
         <div class="info">
           <h3>Signature Beanie</h3>
-          <p>Ribbed knit · embroidered swift</p>
-          <p class="st">Drop 001 — coming soon</p>
+          <p>Ribbed knit, embroidered swift</p>
+          <p class="st">Drop 001 coming soon</p>
         </div>
       </article>
     </div>
@@ -473,11 +473,11 @@ footer .links{display:flex;gap:1.8rem}
           that support people who just arrived: language classes, paperwork, housing,
           a first job.
         </p>
-        <p>You're not buying a hoodie. You're funding someone's arrival.</p>
+        <p>This is bigger than clothing. It's a reminder that we are all human, whichever side of a border we were born on.</p>
         <ul>
           <li><span class="k">Where</span><span class="v">Partner organizations announced with every drop, chosen with the community.</span></li>
           <li><span class="k">Proof</span><span class="v">The amount donated is published after every drop, down to the cent.</span></li>
-          <li><span class="k">Why</span><span class="v">Because we arrived one day too — and someone reached out a hand.</span></li>
+          <li><span class="k">Why</span><span class="v">Because we arrived one day too, and someone reached out a hand.</span></li>
         </ul>
       </div>
     </div>
@@ -495,7 +495,7 @@ footer .links{display:flex;gap:1.8rem}
 <!-- ============ CTA FINAL ============ -->
 <section class="block final" id="rejoindre">
   <div class="wrap">
-    <p class="mono rv" style="margin-bottom:1.5rem">Drop 001 · priority access</p>
+    <p class="mono rv" style="margin-bottom:1.5rem">Drop 001, priority access</p>
     <h2 class="rv">Join the <span class="g">family</span></h2>
     <p class="rv">
       The first drop is a limited run. Members get access 48 hours before
@@ -515,7 +515,7 @@ footer .links{display:flex;gap:1.8rem}
     <svg class="wordmark" viewBox="365 928 1262 142" role="img" aria-label="FOREIGNERS">
       <use href="#wordmark-paths"/>
     </svg>
-    <p class="mono">© MMXXVI FOREIGNERS · Family Over Worries</p>
+    <p class="mono">© MMXXVI FOREIGNERS, Family Over Worries</p>
     <div class="links">
       <a class="mono lnk" href="#" aria-label="Instagram">Instagram</a>
       <a class="mono lnk" href="#" aria-label="TikTok">TikTok</a>
@@ -539,6 +539,17 @@ const io=new IntersectionObserver(es=>{
   es.forEach(e=>{if(e.isIntersecting){e.target.classList.add('in');io.unobserve(e.target)}});
 },{threshold:.15});
 document.querySelectorAll('.rv').forEach(el=>io.observe(el));
+
+// spine : une lettre s'allume selon la position dans la page
+const spineLetters=document.querySelectorAll('.spine span');
+function litSpine(){
+  const max=document.documentElement.scrollHeight-window.innerHeight;
+  const p=max>0?window.scrollY/max:0;
+  const i=Math.min(spineLetters.length-1,Math.floor(p*spineLetters.length));
+  spineLetters.forEach((l,j)=>l.classList.toggle('lit',j===i));
+}
+window.addEventListener('scroll',litSpine,{passive:true});
+litSpine();
 </script>
 </body>
 </html>
