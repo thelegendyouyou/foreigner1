@@ -186,8 +186,8 @@ h2 .g{color:var(--gold)}
 /* ============ DROP / COLLECTION ============ */
 .drop{background:var(--ink-2);border-top:1px solid var(--line);border-bottom:1px solid var(--line)}
 .grid{display:grid;grid-template-columns:repeat(4,1fr);gap:1.2rem}
-.card{border:1px solid var(--line);background:var(--ink);transition:border-color .4s,transform .4s}
-.card:hover{border-color:var(--line-gold);transform:translateY(-5px)}
+.card{border:1px solid var(--line);background:var(--ink);transition:border-color .4s,transform .4s;cursor:pointer}
+.card:hover,.card:focus-visible{border-color:var(--line-gold);transform:translateY(-5px)}
 .card .ph{
   aspect-ratio:1/1;overflow:hidden;background:var(--ink-3);position:relative;
 }
@@ -196,6 +196,12 @@ h2 .g{color:var(--gold)}
   transition:transform .6s cubic-bezier(.2,.7,.2,1);
 }
 .card:hover .ph img{transform:scale(1.045)}
+/* vue arriere au survol (hoodies) */
+.card .ph img.back{
+  position:absolute;inset:0;opacity:0;
+  transition:opacity .5s ease,transform .6s cubic-bezier(.2,.7,.2,1);
+}
+.card:hover .ph img.back,.card:focus-visible .ph img.back{opacity:1}
 .card .ph .tag{
   position:absolute;top:.8rem;left:.8rem;font-family:var(--mono);font-size:.62rem;
   letter-spacing:.18em;background:var(--ink);color:var(--gold);padding:.35rem .6rem;
@@ -232,6 +238,43 @@ h2 .g{color:var(--gold)}
 .stamp .ring-txt{fill:var(--gold);font-family:var(--mono);font-size:11.5px;letter-spacing:.35em}
 .stamp .fc{fill:var(--sand)}
 @keyframes spin{to{transform:rotate(360deg)}}
+
+/* ============ FICHE PRODUIT (MODALE) ============ */
+.pmodal{position:fixed;inset:0;z-index:100;display:flex;align-items:center;justify-content:center;padding:1.25rem}
+.pmodal[hidden]{display:none}
+.pmodal-backdrop{position:absolute;inset:0;background:rgba(8,7,5,.84);backdrop-filter:blur(7px)}
+.pmodal-box{
+  position:relative;display:grid;grid-template-columns:1.15fr .85fr;
+  max-width:960px;width:100%;background:var(--ink-2);border:1px solid var(--line-gold);
+  animation:pmodal-in .35s cubic-bezier(.2,.7,.2,1) both;
+}
+@keyframes pmodal-in{from{opacity:0;transform:translateY(22px) scale(.985)}to{opacity:1;transform:none}}
+.pmodal-media{position:relative;aspect-ratio:1/1;background:var(--ink-3);overflow:hidden}
+.pmodal-media img{width:100%;height:100%;object-fit:cover;display:block}
+.pnav{
+  position:absolute;top:50%;transform:translateY(-50%);z-index:2;
+  background:rgba(12,10,7,.55);border:1px solid var(--line);color:var(--sand);
+  font-size:1.5rem;line-height:1;padding:.45rem .8rem;cursor:pointer;transition:color .3s,border-color .3s;
+}
+.pnav:hover{color:var(--gold-2);border-color:var(--gold)}
+.pnav.prev{left:.8rem}.pnav.next{right:.8rem}
+.pdots{position:absolute;bottom:.9rem;left:0;right:0;display:flex;gap:.45rem;justify-content:center;z-index:2}
+.pdots i{width:26px;height:2px;background:rgba(234,224,204,.28);transition:background .3s}
+.pdots i.on{background:var(--gold)}
+.pmodal-info{padding:2.4rem 2.2rem 2rem;display:flex;flex-direction:column;gap:.9rem;align-items:flex-start}
+.pmodal-info h3{font-family:var(--disp);font-weight:800;font-size:2.3rem;text-transform:uppercase;line-height:1}
+.pdesc{color:#BFB49D;font-size:.95rem}
+.pmodal-info .btn{margin-top:auto}
+.pmodal-x{
+  position:absolute;top:.7rem;right:.85rem;z-index:3;background:none;border:0;
+  color:var(--taupe);font-size:1.15rem;cursor:pointer;padding:.4rem;transition:color .3s;
+}
+.pmodal-x:hover{color:var(--gold-2)}
+@media(max-width:760px){
+  .pmodal-box{grid-template-columns:1fr;max-height:92vh;overflow:auto}
+  .pmodal-info{padding:1.6rem;gap:.7rem}
+  .pmodal-info .btn{margin-top:.6rem}
+}
 
 /* ============ CTA FINAL ============ */
 .final{
@@ -415,10 +458,14 @@ footer .links{display:flex;gap:1.8rem}
       <p class="mono">4 pieces, limited run, <b>coming soon</b></p>
     </div>
     <div class="grid">
-      <article class="card rv">
+      <article class="card rv" tabindex="0" role="button" aria-label="Night Hoodie, open product view"
+        data-name="Night Hoodie" data-tag="FGN-001"
+        data-desc="Heavyweight hoodie in deep black. Gold embroidered swift on the chest, FOREIGNERS wordmark across the back."
+        data-images="assets/hoodie-noir-front.jpg,assets/hoodie-noir-back.jpg">
         <div class="ph">
           <span class="tag">FGN-001</span>
-          <img src="assets/hoodie-noir.jpg" alt="Black FOREIGNERS hoodie, gold embroidered swift on the chest and gold wordmark on the back" loading="lazy">
+          <img src="assets/hoodie-noir-front.jpg" alt="Black FOREIGNERS hoodie, gold embroidered swift on the chest" loading="lazy">
+          <img class="back" src="assets/hoodie-noir-back.jpg" alt="" aria-hidden="true" loading="lazy">
         </div>
         <div class="info">
           <h3>Night Hoodie</h3>
@@ -426,10 +473,14 @@ footer .links{display:flex;gap:1.8rem}
           <p class="st">Drop 001 coming soon</p>
         </div>
       </article>
-      <article class="card rv" style="transition-delay:.08s">
+      <article class="card rv" style="transition-delay:.08s" tabindex="0" role="button" aria-label="Sand Hoodie, open product view"
+        data-name="Sand Hoodie" data-tag="FGN-002"
+        data-desc="Oversized hoodie in warm sand. 'Family Over Worries' printed along the sleeve, vertical FOREIGNERS wordmark down the back."
+        data-images="assets/hoodie-beige-front.jpg,assets/hoodie-beige-back.jpg">
         <div class="ph">
           <span class="tag">FGN-002</span>
-          <img src="assets/hoodie-beige.jpg" alt="Sand FOREIGNERS hoodie, Family Over Worries printed on the sleeve and vertical wordmark on the back" loading="lazy">
+          <img src="assets/hoodie-beige-front.jpg" alt="Sand FOREIGNERS hoodie, Family Over Worries printed on the sleeve" loading="lazy">
+          <img class="back" src="assets/hoodie-beige-back.jpg" alt="" aria-hidden="true" loading="lazy">
         </div>
         <div class="info">
           <h3>Sand Hoodie</h3>
@@ -437,7 +488,10 @@ footer .links{display:flex;gap:1.8rem}
           <p class="st">Drop 001 coming soon</p>
         </div>
       </article>
-      <article class="card rv" style="transition-delay:.16s">
+      <article class="card rv" style="transition-delay:.16s" tabindex="0" role="button" aria-label="Night Sweatpants, open product view"
+        data-name="Night Sweatpants" data-tag="FGN-003"
+        data-desc="Relaxed-fit sweatpants in deep black. White swift at the hip, wordmark at the ankle."
+        data-images="assets/jogging-noir.jpg">
         <div class="ph">
           <span class="tag">FGN-003</span>
           <img src="assets/jogging-noir.jpg" alt="Black FOREIGNERS sweatpants with white swift at the hip and wordmark at the ankle" loading="lazy">
@@ -448,7 +502,10 @@ footer .links{display:flex;gap:1.8rem}
           <p class="st">Drop 001 coming soon</p>
         </div>
       </article>
-      <article class="card rv" style="transition-delay:.24s">
+      <article class="card rv" style="transition-delay:.24s" tabindex="0" role="button" aria-label="Signature Beanie, open product view"
+        data-name="Signature Beanie" data-tag="FGN-004"
+        data-desc="Ribbed knit beanie in deep black, white embroidered swift on the cuff."
+        data-images="assets/bonnet-noir.jpg">
         <div class="ph">
           <span class="tag">FGN-004</span>
           <img src="assets/bonnet-noir.jpg" alt="Ribbed black FOREIGNERS beanie with white embroidered swift on the cuff" loading="lazy">
@@ -515,6 +572,27 @@ footer .links{display:flex;gap:1.8rem}
   </div>
 </section>
 
+<!-- ============ FICHE PRODUIT ============ -->
+<div class="pmodal" data-modal hidden>
+  <div class="pmodal-backdrop" data-close></div>
+  <div class="pmodal-box" role="dialog" aria-modal="true" aria-label="Product view">
+    <button class="pmodal-x" type="button" data-close aria-label="Close product view">✕</button>
+    <div class="pmodal-media">
+      <button class="pnav prev" type="button" data-prev aria-label="Previous image">‹</button>
+      <img data-pimg src="" alt="">
+      <button class="pnav next" type="button" data-next aria-label="Next image">›</button>
+      <div class="pdots" data-dots></div>
+    </div>
+    <div class="pmodal-info">
+      <p class="mono" data-ptag></p>
+      <h3 data-pname></h3>
+      <p class="pdesc" data-pdesc></p>
+      <a href="#rejoindre" class="btn" data-close>Get early access</a>
+      <p class="mono">Drop 001, coming soon</p>
+    </div>
+  </div>
+</div>
+
 <footer>
   <div class="wrap">
     <svg class="wordmark" viewBox="365 928 1262 142" role="img" aria-label="FOREIGNERS">
@@ -555,6 +633,46 @@ function litSpine(){
 }
 window.addEventListener('scroll',litSpine,{passive:true});
 litSpine();
+
+// ===== fiche produit =====
+const pmodal=document.querySelector('[data-modal]');
+const pimg=pmodal.querySelector('[data-pimg]');
+const pdots=pmodal.querySelector('[data-dots]');
+let pimgs=[],pidx=0,pname='';
+
+function prender(){
+  pimg.src=pimgs[pidx];
+  pimg.alt=pname+' — view '+(pidx+1)+' of '+pimgs.length;
+  pdots.innerHTML=pimgs.map((_,i)=>'<i class="'+(i===pidx?'on':'')+'"></i>').join('');
+  const nav=pimgs.length>1?'':'none';
+  pmodal.querySelector('[data-prev]').style.display=nav;
+  pmodal.querySelector('[data-next]').style.display=nav;
+}
+function popen(card){
+  pimgs=card.dataset.images.split(',');pidx=0;pname=card.dataset.name;
+  pmodal.querySelector('[data-ptag]').textContent=card.dataset.tag;
+  pmodal.querySelector('[data-pname]').textContent=card.dataset.name;
+  pmodal.querySelector('[data-pdesc]').textContent=card.dataset.desc;
+  prender();
+  pmodal.hidden=false;
+  document.body.style.overflow='hidden';
+  pmodal.querySelector('.pmodal-x').focus();
+}
+function pclose(){pmodal.hidden=true;document.body.style.overflow=''}
+
+document.querySelectorAll('.card[data-images]').forEach(card=>{
+  card.addEventListener('click',()=>popen(card));
+  card.addEventListener('keydown',e=>{if(e.key==='Enter'||e.key===' '){e.preventDefault();popen(card)}});
+});
+pmodal.querySelectorAll('[data-close]').forEach(el=>el.addEventListener('click',pclose));
+pmodal.querySelector('[data-prev]').addEventListener('click',()=>{pidx=(pidx-1+pimgs.length)%pimgs.length;prender()});
+pmodal.querySelector('[data-next]').addEventListener('click',()=>{pidx=(pidx+1)%pimgs.length;prender()});
+document.addEventListener('keydown',e=>{
+  if(pmodal.hidden)return;
+  if(e.key==='Escape')pclose();
+  if(e.key==='ArrowLeft'){pidx=(pidx-1+pimgs.length)%pimgs.length;prender()}
+  if(e.key==='ArrowRight'){pidx=(pidx+1)%pimgs.length;prender()}
+});
 
 // ===== hook 3D : le martinet en particules =====
 (function(){
