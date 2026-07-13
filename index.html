@@ -731,18 +731,10 @@ document.addEventListener('keydown',e=>{
   const parts=[];
   for(let y=0;y<SH;y+=step)for(let x=0;x<SW;x+=step){
     if(px[(y*SW+x)*4+3]>128){
-      // mobile : nuée resserrée et centrée pour rester dans l'écran pendant la formation
-      const a=Math.random()*Math.PI*2, r=mobile?(50+Math.random()*85):(280+Math.random()*520);
-      let sx=(x-SW/2)+Math.cos(a)*r+(mobile?0:220),
-          sy=(y-SH/2)+Math.sin(a)*r-(mobile?35:120),
-          sz=(Math.random()-.5)*(mobile?200:700);
-      if(mobile){ // garde la nuée dans l'écran, perspective comprise
-        sx=Math.max(-140,Math.min(140,sx));
-        sy=Math.max(-85,Math.min(320,sy));
-      }
       parts.push({
         tx:x-SW/2, ty:y-SH/2, tz:(Math.random()-.5)*52,
-        sx,sy,sz,
+        a:Math.random()*Math.PI*2, r0:Math.random(), z0:Math.random()-.5,
+        sx:0,sy:0,sz:0,
         d:Math.random()*55, ph:Math.random()*Math.PI*2,
         sz2:.6+Math.random()*1.5, c:Math.random()
       });
@@ -750,9 +742,23 @@ document.addEventListener('keydown',e=>{
   }
 
   let W,H,DPR,oyM=170,baseM=.5;
+  // mode mobile réévalué en continu (Safari iOS peut rapporter une largeur desktop au chargement)
+  let mob=null;
+  function scatter(){
+    // (re)génère la nuée de départ selon le mode : resserrée et centrée sur mobile
+    for(const p of parts){
+      const r=mob?(50+p.r0*85):(280+p.r0*520);
+      p.sx=p.tx+Math.cos(p.a)*r+(mob?0:220);
+      p.sy=p.ty+Math.sin(p.a)*r-(mob?35:120);
+      p.sz=p.z0*(mob?200:700);
+      if(mob){
+        p.sx=Math.max(-140,Math.min(140,p.sx));
+        p.sy=Math.max(-85,Math.min(320,p.sy));
+      }
+    }
+  }
   function anchors(){
     // mobile : le martinet occupe l'espace reserve entre l'eyebrow et le titre
-    if(!mobile)return;
     const inner=hero.querySelector('.hero-inner');
     const eb=hero.querySelector('.eyebrow'), h1=hero.querySelector('h1');
     if(!inner||!eb||!h1)return;
@@ -773,6 +779,9 @@ document.addEventListener('keydown',e=>{
   let t=0;
   const F=900; // focale
   function frame(){
+    // bascule mobile/desktop détectée en direct : régénère la nuée et rejoue la formation
+    const m=W<700;
+    if(m!==mob){mob=m;scatter();t=0;anchors()}
     const sp=Math.min(1,scrollY/(H*.9)); // dissolution en quittant le hero
     if(sp>=1){requestAnimationFrame(frame);return}
     t++;
@@ -780,12 +789,12 @@ document.addEventListener('keydown',e=>{
     const idle=Math.sin(t*.004)*.05;
     const cy2=Math.cos(rx),sy2=Math.sin(rx),cx2=Math.cos(ry+idle),sx2=Math.sin(ry+idle);
     // mobile : oiseau complet dans sa zone dediee (entre eyebrow et titre), rien derriere le texte
-    const base=mobile?baseM:Math.min(W*.55,720)/SW;
-    const dolly=(mobile?1.08:1.22)-((mobile?.08:.22))*Math.min(1,t/110);
+    const base=mob?baseM:Math.min(W*.55,720)/SW;
+    const dolly=(mob?1.08:1.22)-((mob?.08:.22))*Math.min(1,t/110);
     const scale=base*dolly;
-    const ox=W*(mobile?.5:.64);
-    const oy=mobile?oyM:H*.44;
-    const mAlpha=mobile?.8:1;
+    const ox=W*(mob?.5:.64);
+    const oy=mob?oyM:H*.44;
+    const mAlpha=mob?.8:1;
 
     ctx.setTransform(DPR,0,0,DPR,0,0);
     ctx.clearRect(0,0,W,H);
@@ -809,7 +818,7 @@ document.addEventListener('keydown',e=>{
       const a=(0.16+0.5*e)*Math.max(.15,Math.min(1,k))*(1-sp)*mAlpha;
       ctx.fillStyle=p.c<.72?`rgba(199,154,91,${a})`:p.c<.9?`rgba(228,192,137,${a})`:`rgba(234,224,204,${a*.9})`;
       ctx.beginPath();
-      ctx.arc(ox+X*scale*k,oy+Y*scale*k,p.sz2*k*(mobile?1:1.15),0,6.283);
+      ctx.arc(ox+X*scale*k,oy+Y*scale*k,p.sz2*k*(mob?1:1.15),0,6.283);
       ctx.fill();
     }
     requestAnimationFrame(frame);
