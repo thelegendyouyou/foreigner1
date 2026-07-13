@@ -305,21 +305,24 @@ footer .links{display:flex;gap:1.8rem}
   .stamp{right:4%}
   .manif .cols,.half .cols{grid-template-columns:1fr}
 }
-@media(max-width:560px){
-  .grid{grid-template-columns:1fr}
-  nav a.lnk{display:none}
-  .capture{flex-direction:column}
-  .capture .btn{border-left:0;border-top:1px solid var(--line-gold);padding:1rem}
-  .stamp{display:none}
-  /* hero compact : le martinet a sa propre zone entre l'eyebrow et le titre */
+@media(max-width:700px){
+  /* hero compact : le martinet a sa propre bande entre l'eyebrow et le titre.
+     Seuil aligné sur celui du moteur de particules (W<700), bande proportionnelle a l'ecran. */
   .hero{padding:5rem 0 1.75rem}
-  .hero .eyebrow{margin-bottom:112px;gap:1rem}
+  .hero .eyebrow{margin-bottom:clamp(96px,28vw,128px);gap:1rem}
   .hero .eyebrow .mono,.hero .eyebrow{font-size:.62rem}
   h1{font-size:clamp(2.3rem,10.8vw,9.5rem)}
   .hero p.lead{font-size:.9rem;line-height:1.5;margin:1.2rem 0 1.4rem}
   .hero p.lead em{margin-top:.55rem}
   .capture input{padding:.8rem 1.1rem}
   .capture-note{margin-top:.55rem}
+}
+@media(max-width:560px){
+  .grid{grid-template-columns:1fr}
+  nav a.lnk{display:none}
+  .capture{flex-direction:column}
+  .capture .btn{border-left:0;border-top:1px solid var(--line-gold);padding:1rem}
+  .stamp{display:none}
 }
 
 /* ============ ACCESSIBILITÉ ============ */
@@ -765,8 +768,9 @@ document.addEventListener('keydown',e=>{
     const top=inner.offsetTop+eb.offsetTop+eb.offsetHeight;
     const bot=inner.offsetTop+h1.offsetTop;
     if(bot-top>40){
-      oyM=(top+bot)/2;
+      // légèrement au-dessus du centre de la bande, sans toucher l'eyebrow
       baseM=Math.min(W*.62/SW,(bot-top-16)/SH);
+      oyM=top+(bot-top)*.45;
     }
   }
   function size(){DPR=Math.min(devicePixelRatio||1,2);W=hero.clientWidth;H=hero.clientHeight;cv.width=W*DPR;cv.height=H*DPR;anchors()}
@@ -792,7 +796,7 @@ document.addEventListener('keydown',e=>{
     const base=mob?baseM:Math.min(W*.55,720)/SW;
     const dolly=(mob?1.08:1.22)-((mob?.08:.22))*Math.min(1,t/110);
     const scale=base*dolly;
-    const ox=W*(mob?.5:.64);
+    const ox=W*(mob?.42:.64); // mobile : calé à gauche, aligné avec le texte
     const oy=mob?oyM:H*.44;
     const mAlpha=mob?.8:1;
 
