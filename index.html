@@ -752,10 +752,10 @@ document.addEventListener('keydown',e=>{
   function scatter(){
     // (re)génère la nuée de départ selon le mode : resserrée et centrée sur mobile
     for(const p of parts){
-      const r=mob?(50+p.r0*85):(280+p.r0*520);
-      p.sx=p.tx+Math.cos(p.a)*r+(mob?0:220);
-      p.sy=p.ty+Math.sin(p.a)*r-(mob?35:120);
-      p.sz=p.z0*(mob?200:700);
+      const r=mob?(50+p.r0*85):(160+p.r0*320);
+      p.sx=p.tx+Math.cos(p.a)*r; // nuée symétrique : plus aucun biais vers la droite
+      p.sy=p.ty+Math.sin(p.a)*r-(mob?35:90);
+      p.sz=p.z0*(mob?200:350);
       if(mob){
         p.sx=Math.max(-140,Math.min(140,p.sx));
         p.sy=Math.max(-85,Math.min(320,p.sy));
@@ -795,17 +795,22 @@ document.addEventListener('keydown',e=>{
   let mx=0,my=0,rx=0,ry=0;
   addEventListener('pointermove',e=>{mx=(e.clientX/innerWidth)*2-1;my=(e.clientY/innerHeight)*2-1},{passive:true});
 
-  let t=0;
+  let t=0,fc=0,last=performance.now();
   const F=900; // focale
   function frame(){
+    // temps réel plafonné : si le navigateur throttle (onglet en arrière-plan,
+    // économie d'énergie), la formation reprend où elle en était au lieu de se figer
+    const now=performance.now();
+    t+=Math.min(200,now-last)/16.67; // rattrape jusqu'a 12 frames d'un coup si le navigateur throttle
+    last=now;
     // bascule mobile/desktop détectée en direct : régénère la nuée et rejoue la formation
     const m=W<700;
     if(m!==mob){mob=m;scatter();t=0;anchors()}
     const sp=Math.min(1,scrollY/(H*.9)); // dissolution en quittant le hero
     if(sp>=1){requestAnimationFrame(frame);return}
-    t++;
+    fc++;
     // re-mesure périodique : les événements resize d'iOS ne sont pas toujours fiables
-    if(t%45===0&&(hero.clientWidth!==W||hero.clientHeight!==H))size();
+    if(fc%45===0&&(hero.clientWidth!==W||hero.clientHeight!==H))size();
     ry+=((mx*.38)-ry)*.045; rx+=((my*.16)-rx)*.045;
     const idle=Math.sin(t*.004)*.05;
     const cy2=Math.cos(rx),sy2=Math.sin(rx),cx2=Math.cos(ry+idle),sx2=Math.sin(ry+idle);
