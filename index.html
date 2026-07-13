@@ -311,15 +311,15 @@ footer .links{display:flex;gap:1.8rem}
   .capture{flex-direction:column}
   .capture .btn{border-left:0;border-top:1px solid var(--line-gold);padding:1rem}
   .stamp{display:none}
-  /* hero compact : tout tient dans le premier ecran */
-  .hero{padding:5.5rem 0 2.5rem}
-  .hero .eyebrow{margin-bottom:1.3rem;gap:1rem}
+  /* hero compact : le martinet a sa propre zone entre l'eyebrow et le titre */
+  .hero{padding:5rem 0 1.75rem}
+  .hero .eyebrow{margin-bottom:112px;gap:1rem}
   .hero .eyebrow .mono,.hero .eyebrow{font-size:.62rem}
-  h1{font-size:clamp(2.5rem,12.5vw,9.5rem)}
-  .hero p.lead{font-size:.93rem;margin:1.5rem 0 1.7rem}
-  .hero p.lead em{margin-top:.6rem}
-  .capture input{padding:.85rem 1.1rem}
-  .capture-note{margin-top:.7rem}
+  h1{font-size:clamp(2.3rem,10.8vw,9.5rem)}
+  .hero p.lead{font-size:.9rem;line-height:1.5;margin:1.2rem 0 1.4rem}
+  .hero p.lead em{margin-top:.55rem}
+  .capture input{padding:.8rem 1.1rem}
+  .capture-note{margin-top:.55rem}
 }
 
 /* ============ ACCESSIBILITÉ ============ */
@@ -749,9 +749,23 @@ document.addEventListener('keydown',e=>{
     }
   }
 
-  let W,H,DPR;
-  function size(){DPR=Math.min(devicePixelRatio||1,2);W=hero.clientWidth;H=hero.clientHeight;cv.width=W*DPR;cv.height=H*DPR}
+  let W,H,DPR,oyM=170,baseM=.5;
+  function anchors(){
+    // mobile : le martinet occupe l'espace reserve entre l'eyebrow et le titre
+    if(!mobile)return;
+    const inner=hero.querySelector('.hero-inner');
+    const eb=hero.querySelector('.eyebrow'), h1=hero.querySelector('h1');
+    if(!inner||!eb||!h1)return;
+    const top=inner.offsetTop+eb.offsetTop+eb.offsetHeight;
+    const bot=inner.offsetTop+h1.offsetTop;
+    if(bot-top>40){
+      oyM=(top+bot)/2;
+      baseM=Math.min(W*.62/SW,(bot-top-16)/SH);
+    }
+  }
+  function size(){DPR=Math.min(devicePixelRatio||1,2);W=hero.clientWidth;H=hero.clientHeight;cv.width=W*DPR;cv.height=H*DPR;anchors()}
   size();addEventListener('resize',size);
+  if(document.fonts&&document.fonts.ready)document.fonts.ready.then(size);
 
   let mx=0,my=0,rx=0,ry=0;
   addEventListener('pointermove',e=>{mx=(e.clientX/innerWidth)*2-1;my=(e.clientY/innerHeight)*2-1},{passive:true});
@@ -765,14 +779,13 @@ document.addEventListener('keydown',e=>{
     ry+=((mx*.38)-ry)*.045; rx+=((my*.16)-rx)*.045;
     const idle=Math.sin(t*.004)*.05;
     const cy2=Math.cos(rx),sy2=Math.sin(rx),cx2=Math.cos(ry+idle),sx2=Math.sin(ry+idle);
-    // mobile : oiseau borné en largeur ET en hauteur, ancré sous le header (pas en % de H,
-    // car la hauteur visible varie fortement selon la barre d'adresse des iPhone)
-    const base=mobile?Math.min(W*.74/SW,H*.30/SH):Math.min(W*.55,720)/SW;
-    const dolly=(mobile?1.1:1.22)-((mobile?.1:.22))*Math.min(1,t/110);
+    // mobile : oiseau complet dans sa zone dediee (entre eyebrow et titre), rien derriere le texte
+    const base=mobile?baseM:Math.min(W*.55,720)/SW;
+    const dolly=(mobile?1.08:1.22)-((mobile?.08:.22))*Math.min(1,t/110);
     const scale=base*dolly;
-    const ox=mobile?W*.5:W*.64;
-    const oy=mobile?(84+(SH/2)*base*1.12):H*.44;
-    const mAlpha=mobile?.45:1;
+    const ox=W*(mobile?.5:.64);
+    const oy=mobile?oyM:H*.44;
+    const mAlpha=mobile?.8:1;
 
     ctx.setTransform(DPR,0,0,DPR,0,0);
     ctx.clearRect(0,0,W,H);
