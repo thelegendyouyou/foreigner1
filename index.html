@@ -99,6 +99,7 @@ nav a.lnk:hover{color:var(--gold-2)}
 /* ============ HERO ============ */
 .hero{
   position:relative;min-height:100vh;min-height:100svh;display:flex;align-items:center;
+  overflow:hidden;
   padding:8rem 0 5rem;
   background:
     radial-gradient(ellipse 60% 45% at 18% 8%, rgba(199,154,91,.13), transparent 60%),
@@ -764,10 +765,13 @@ document.addEventListener('keydown',e=>{
     ry+=((mx*.38)-ry)*.045; rx+=((my*.16)-rx)*.045;
     const idle=Math.sin(t*.004)*.05;
     const cy2=Math.cos(rx),sy2=Math.sin(rx),cx2=Math.cos(ry+idle),sx2=Math.sin(ry+idle);
-    // mobile : oiseau plus petit (78% de la largeur), dolly reduit pour ne jamais depasser
-    const scale=(mobile?W*.78:Math.min(W*.55,720))/SW*((mobile?1.1:1.22)-((mobile?.1:.22))*Math.min(1,t/110));
-    // mobile : martinet remonté au-dessus du titre + particules attenuées pour la lisibilité
-    const ox=mobile?W*.5:W*.64, oy=mobile?H*.22:H*.44;
+    // mobile : oiseau borné en largeur ET en hauteur, ancré sous le header (pas en % de H,
+    // car la hauteur visible varie fortement selon la barre d'adresse des iPhone)
+    const base=mobile?Math.min(W*.74/SW,H*.30/SH):Math.min(W*.55,720)/SW;
+    const dolly=(mobile?1.1:1.22)-((mobile?.1:.22))*Math.min(1,t/110);
+    const scale=base*dolly;
+    const ox=mobile?W*.5:W*.64;
+    const oy=mobile?(84+(SH/2)*base*1.12):H*.44;
     const mAlpha=mobile?.45:1;
 
     ctx.setTransform(DPR,0,0,DPR,0,0);
