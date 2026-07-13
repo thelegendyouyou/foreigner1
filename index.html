@@ -44,6 +44,7 @@ a{color:inherit;text-decoration:none}
 /* grain */
 body::after{
   content:"";position:fixed;inset:0;pointer-events:none;z-index:60;opacity:.05;
+  transform:translateZ(0); /* couche GPU : le grain ne se repeint pas au scroll */
   background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='140' height='140'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
 }
 
@@ -158,7 +159,7 @@ h1 .dot{color:var(--gold)}
   border-top:1px solid var(--line-gold);border-bottom:1px solid var(--line-gold);
   background:var(--ink-2);overflow:hidden;padding:1rem 0;
 }
-.marquee .track{display:flex;width:max-content;animation:scroll 30s linear infinite}
+.marquee .track{display:flex;width:max-content;animation:scroll 30s linear infinite;will-change:transform}
 .marquee .set{display:flex;align-items:center;gap:3rem;padding-right:3rem;flex:none}
 .marquee span{font-family:var(--disp);font-weight:600;font-size:1.15rem;letter-spacing:.14em;color:var(--gold);white-space:nowrap}
 .marquee svg{width:22px;fill:var(--taupe);flex:none}
@@ -306,6 +307,7 @@ footer .links{display:flex;gap:1.8rem}
   .manif .cols,.half .cols{grid-template-columns:1fr}
 }
 @media(max-width:700px){
+  header{backdrop-filter:blur(8px)} /* flou allégé : le backdrop-filter coûte cher sur mobile */
   /* hero compact : le martinet a sa propre bande entre l'eyebrow et le titre.
      Seuil aligné sur celui du moteur de particules (W<700), bande proportionnelle a l'ecran. */
   .hero{padding:5rem 0 1.75rem}
@@ -773,9 +775,22 @@ document.addEventListener('keydown',e=>{
       oyM=top+(bot-top)*.45;
     }
   }
-  function size(){DPR=Math.min(devicePixelRatio||1,2);W=hero.clientWidth;H=hero.clientHeight;cv.width=W*DPR;cv.height=H*DPR;anchors()}
+  function size(){
+    W=hero.clientWidth;H=hero.clientHeight;
+    DPR=Math.min(devicePixelRatio||1,W<700?1.5:2); // résolution réduite sur mobile = fluidité
+    cv.width=W*DPR;cv.height=H*DPR;anchors();
+  }
   size();addEventListener('resize',size);
+  if(window.visualViewport)visualViewport.addEventListener('resize',size);
+  addEventListener('orientationchange',()=>setTimeout(size,300));
   if(document.fonts&&document.fonts.ready)document.fonts.ready.then(size);
+
+  // rendu par lots : les particules d'une même couleur/opacité partagent un seul fill()
+  // (mesuré ~1.6x plus rapide que 3300 arc()+fill() individuels)
+  const COLS=['199,154,91','228,192,137','234,224,204'];
+  const ALPHAS=[.08,.22,.37,.52,.67];
+  const BUCKETS=Array.from({length:COLS.length*ALPHAS.length},()=>[]);
+  for(const p of parts)p.si=p.c<.72?0:p.c<.9?1:2;
 
   let mx=0,my=0,rx=0,ry=0;
   addEventListener('pointermove',e=>{mx=(e.clientX/innerWidth)*2-1;my=(e.clientY/innerHeight)*2-1},{passive:true});
@@ -789,15 +804,23 @@ document.addEventListener('keydown',e=>{
     const sp=Math.min(1,scrollY/(H*.9)); // dissolution en quittant le hero
     if(sp>=1){requestAnimationFrame(frame);return}
     t++;
+    // re-mesure périodique : les événements resize d'iOS ne sont pas toujours fiables
+    if(t%45===0&&(hero.clientWidth!==W||hero.clientHeight!==H))size();
     ry+=((mx*.38)-ry)*.045; rx+=((my*.16)-rx)*.045;
     const idle=Math.sin(t*.004)*.05;
     const cy2=Math.cos(rx),sy2=Math.sin(rx),cx2=Math.cos(ry+idle),sx2=Math.sin(ry+idle);
     // mobile : oiseau complet dans sa zone dediee (entre eyebrow et titre), rien derriere le texte
-    const base=mob?baseM:Math.min(W*.55,720)/SW;
+    // desktop : borné aussi en hauteur pour les écrans larges et peu hauts (laptops)
+    const base=mob?baseM:Math.min(Math.min(W*.55,720)/SW,(H*.68)/(SH*1.22));
     const dolly=(mob?1.08:1.22)-((mob?.08:.22))*Math.min(1,t/110);
     const scale=base*dolly;
-    const ox=W*(mob?.42:.64); // mobile : calé à gauche, aligné avec le texte
-    const oy=mob?oyM:H*.44;
+    let ox=W*(mob?.42:.64); // mobile : calé à gauche, aligné avec le texte
+    let oy=mob?oyM:H*.44;
+    if(mob){ // verrou anti-coupure : la boîte de l'oiseau est ramenée dans l'écran quoi qu'il arrive
+      const hw=SW*scale/2+6, hh=SH*scale/2+6;
+      ox=Math.min(Math.max(ox,hw),Math.max(hw,W-hw));
+      oy=Math.min(Math.max(oy,hh+72),Math.max(hh+72,H-hh));
+    }
     const mAlpha=mob?.8:1;
 
     ctx.setTransform(DPR,0,0,DPR,0,0);
@@ -819,11 +842,21 @@ document.addEventListener('keydown',e=>{
       let Y=y*cy2-Z*sy2; Z=y*sy2+Z*cy2;
       const k=F/(F+Z*1.6);
       if(k<=0)continue;
-      const a=(0.16+0.5*e)*Math.max(.15,Math.min(1,k))*(1-sp)*mAlpha;
-      ctx.fillStyle=p.c<.72?`rgba(199,154,91,${a})`:p.c<.9?`rgba(228,192,137,${a})`:`rgba(234,224,204,${a*.9})`;
+      const a=(0.16+0.5*e)*Math.max(.15,Math.min(1,k))*(1-sp)*mAlpha*(p.si===2?.9:1);
+      const ai=Math.min(4,Math.floor(a/.15));
+      BUCKETS[p.si*5+ai].push(ox+X*scale*k, oy+Y*scale*k, p.sz2*k*(mob?1:1.15));
+    }
+    for(let b=0;b<BUCKETS.length;b++){
+      const arr=BUCKETS[b];
+      if(!arr.length)continue;
+      ctx.fillStyle=`rgba(${COLS[(b/5)|0]},${ALPHAS[b%5]})`;
       ctx.beginPath();
-      ctx.arc(ox+X*scale*k,oy+Y*scale*k,p.sz2*k*(mob?1:1.15),0,6.283);
+      for(let i=0;i<arr.length;i+=3){
+        ctx.moveTo(arr[i]+arr[i+2],arr[i+1]);
+        ctx.arc(arr[i],arr[i+1],arr[i+2],0,6.283);
+      }
       ctx.fill();
+      arr.length=0;
     }
     requestAnimationFrame(frame);
   }
