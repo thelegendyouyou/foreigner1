@@ -98,7 +98,7 @@ nav a.lnk:hover{color:var(--gold-2)}
 
 /* ============ HERO ============ */
 .hero{
-  position:relative;min-height:100vh;display:flex;align-items:center;
+  position:relative;min-height:100vh;min-height:100svh;display:flex;align-items:center;
   padding:8rem 0 5rem;
   background:
     radial-gradient(ellipse 60% 45% at 18% 8%, rgba(199,154,91,.13), transparent 60%),
@@ -310,6 +310,15 @@ footer .links{display:flex;gap:1.8rem}
   .capture{flex-direction:column}
   .capture .btn{border-left:0;border-top:1px solid var(--line-gold);padding:1rem}
   .stamp{display:none}
+  /* hero compact : tout tient dans le premier ecran */
+  .hero{padding:5.5rem 0 2.5rem}
+  .hero .eyebrow{margin-bottom:1.3rem;gap:1rem}
+  .hero .eyebrow .mono,.hero .eyebrow{font-size:.62rem}
+  h1{font-size:clamp(2.5rem,12.5vw,9.5rem)}
+  .hero p.lead{font-size:.93rem;margin:1.5rem 0 1.7rem}
+  .hero p.lead em{margin-top:.6rem}
+  .capture input{padding:.85rem 1.1rem}
+  .capture-note{margin-top:.7rem}
 }
 
 /* ============ ACCESSIBILITÉ ============ */
