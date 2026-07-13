@@ -5,6 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>FOREIGNERS — Every foreigner belongs | Family Over Worries</title>
 <meta name="description" content="FOREIGNERS, the clothing brand that gives 50% of its profits to organizations supporting newcomers and their cultures. Join the first drop.">
+<link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='705 795 620 410'%3E%3Cg fill='%23C79A5B'%3E%3Cpath d='M1260.1,976.3C912.1,941.5,705,802.6,705,802.6s159.2,193.1,419,272.4l89.1-42.2c33.5-13.9,70,19.1,70,19.1C1319.7,984.2,1260.1,976.3,1260.1,976.3z'/%3E%3Cpath d='M865.5,1197.4l230.9-109.2c-22-7.4-43.3-15.5-63.8-24.2L865.5,1197.4z'/%3E%3C/g%3E%3C/svg%3E">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Big+Shoulders+Display:wght@500;600;700;800;900&family=Hanken+Grotesk:ital,wght@0,300;0,400;0,500;0,600;1,400&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
@@ -528,7 +529,7 @@ footer .links{display:flex;gap:1.8rem}
   <div class="wrap">
     <div class="cols">
       <div class="rv">
-        <p class="big">50<span style="font-size:.55em">%</span>
+        <p class="big"><span data-count>50</span><span style="font-size:.55em">%</span>
           <small>Carrying culture forward.</small>
         </p>
       </div>
@@ -603,7 +604,7 @@ footer .links{display:flex;gap:1.8rem}
     </svg>
     <p class="mono">© MMXXVI FOREIGNERS, Family Over Worries</p>
     <div class="links">
-      <a class="mono lnk" href="#" aria-label="Instagram">Instagram</a>
+      <a class="mono lnk" href="https://www.instagram.com/fowreigners/" target="_blank" rel="noopener" aria-label="FOREIGNERS on Instagram">Instagram</a>
       <a class="mono lnk" href="#" aria-label="TikTok">TikTok</a>
       <a class="mono lnk" href="#" aria-label="Contact">Contact</a>
     </div>
@@ -625,6 +626,26 @@ const io=new IntersectionObserver(es=>{
   es.forEach(e=>{if(e.isIntersecting){e.target.classList.add('in');io.unobserve(e.target)}});
 },{threshold:.15});
 document.querySelectorAll('.rv').forEach(el=>io.observe(el));
+
+// compteur 50% : 0 -> 50 quand la section entre a l'ecran
+const cnt=document.querySelector('[data-count]');
+if(cnt){
+  const reduce=matchMedia('(prefers-reduced-motion: reduce)').matches;
+  const cio=new IntersectionObserver(es=>{
+    es.forEach(en=>{
+      if(!en.isIntersecting)return;
+      cio.disconnect();
+      if(reduce){cnt.textContent='50';return}
+      const t0=performance.now(),D=1300;
+      (function tick(now){
+        const p=Math.min(1,(now-t0)/D);
+        cnt.textContent=Math.round((1-Math.pow(1-p,3))*50);
+        if(p<1)requestAnimationFrame(tick);
+      })(t0);
+    });
+  },{threshold:.4});
+  cio.observe(cnt);
+}
 
 // spine : une lettre s'allume selon la position dans la page
 const spineLetters=document.querySelectorAll('.spine span');
@@ -728,7 +749,9 @@ document.addEventListener('keydown',e=>{
     const idle=Math.sin(t*.004)*.05;
     const cy2=Math.cos(rx),sy2=Math.sin(rx),cx2=Math.cos(ry+idle),sx2=Math.sin(ry+idle);
     const scale=Math.min(W*.55,720)/SW*(1.22-.22*Math.min(1,t/110)); // léger dolly d'entrée
-    const ox=mobile?W*.5:W*.64, oy=H*.44;
+    // mobile : martinet remonté au-dessus du titre + particules attenuées pour la lisibilité
+    const ox=mobile?W*.5:W*.64, oy=mobile?H*.22:H*.44;
+    const mAlpha=mobile?.45:1;
 
     ctx.setTransform(DPR,0,0,DPR,0,0);
     ctx.clearRect(0,0,W,H);
@@ -749,7 +772,7 @@ document.addEventListener('keydown',e=>{
       let Y=y*cy2-Z*sy2; Z=y*sy2+Z*cy2;
       const k=F/(F+Z*1.6);
       if(k<=0)continue;
-      const a=(0.16+0.5*e)*Math.max(.15,Math.min(1,k))*(1-sp);
+      const a=(0.16+0.5*e)*Math.max(.15,Math.min(1,k))*(1-sp)*mAlpha;
       ctx.fillStyle=p.c<.72?`rgba(199,154,91,${a})`:p.c<.9?`rgba(228,192,137,${a})`:`rgba(234,224,204,${a*.9})`;
       ctx.beginPath();
       ctx.arc(ox+X*scale*k,oy+Y*scale*k,p.sz2*k*(mobile?1:1.15),0,6.283);
