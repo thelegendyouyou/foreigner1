@@ -1,0 +1,16 @@
+{
+  "redirects": [
+    {
+      "source": "/:path*",
+      "has": [{ "type": "host", "value": "www.foreigners.world" }],
+      "destination": "https://foreigners.world/:path*",
+      "permanent": true
+    },
+    {
+      "source": "/:path*",
+      "has": [{ "type": "host", "value": "foreigner1.vercel.app" }],
+      "destination": "https://foreigners.world/:path*",
+      "permanent": true
+    }
+  ]
+}
