@@ -171,6 +171,8 @@ h1 .dot{color:var(--gold)}
 .capture .btn{border:0;border-left:1px solid var(--line-gold);flex:none}
 .capture-note{margin-top:.9rem}
 .form-ok{display:none;font-family:var(--mono);font-size:.85rem;color:var(--gold-2);letter-spacing:.08em;padding:1.1rem 0}
+.form-err{display:none;font-family:var(--mono);font-size:.78rem;color:#D9906A;letter-spacing:.06em;margin-top:.7rem}
+.capture .btn:disabled{opacity:.6;cursor:wait}
 
 /* stagger d'entrée */
 .hero .eyebrow,.hero h1,.hero .lead,.hero .capture,.hero .capture-note{
@@ -433,9 +435,10 @@ footer .links{display:flex;gap:1.8rem}
     </p>
     <form class="capture" data-capture>
       <input type="email" required placeholder="your@email.com" aria-label="Your email address">
-      <button class="btn" type="submit">Get drop access</button>
+      <button class="btn" type="submit" data-label="Get drop access">Get drop access</button>
     </form>
     <p class="form-ok" data-ok>✓ Welcome to the family. You'll hear from us first.</p>
+    <p class="form-err" data-err>Hmm, that didn't go through. Give it another try in a minute.</p>
     <p class="capture-note mono">First drop, limited pieces, zero spam</p>
   </div>
 </section>
@@ -614,9 +617,10 @@ footer .links{display:flex;gap:1.8rem}
     </p>
     <form class="capture rv" data-capture>
       <input type="email" required placeholder="your@email.com" aria-label="Your email address">
-      <button class="btn" type="submit">I want early access</button>
+      <button class="btn" type="submit" data-label="I want early access">I want early access</button>
     </form>
     <p class="form-ok" data-ok>✓ Welcome to the family. You'll hear from us first.</p>
+    <p class="form-err" data-err>Hmm, that didn't go through. Give it another try in a minute.</p>
   </div>
 </section>
 
@@ -656,12 +660,30 @@ footer .links{display:flex;gap:1.8rem}
 </footer>
 
 <script>
-// capture email (à brancher sur Mailchimp / Formspree / Klaviyo)
+// capture email -> Shopify via /api/subscribe (confirmation reelle)
 document.querySelectorAll('[data-capture]').forEach(form=>{
-  form.addEventListener('submit',e=>{
+  form.addEventListener('submit',async e=>{
     e.preventDefault();
-    form.style.display='none';
-    form.parentElement.querySelector('[data-ok]').style.display='block';
+    const email=form.querySelector('input[type=email]').value.trim();
+    if(!email)return;
+    const btn=form.querySelector('button');
+    const err=form.parentElement.querySelector('[data-err]');
+    btn.disabled=true;btn.textContent='...';
+    if(err)err.style.display='none';
+    try{
+      const r=await fetch('/api/subscribe',{
+        method:'POST',
+        headers:{'Content-Type':'application/json'},
+        body:JSON.stringify({email})
+      });
+      const d=await r.json();
+      if(!d.ok)throw new Error(d.error||'failed');
+      form.style.display='none';
+      form.parentElement.querySelector('[data-ok]').style.display='block';
+    }catch(ex){
+      btn.disabled=false;btn.textContent=btn.dataset.label||'Get drop access';
+      if(err)err.style.display='block';
+    }
   });
 });
 
