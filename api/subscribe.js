@@ -3,7 +3,7 @@
 // (custom app Shopify avec le scope write_customers).
 
 const SHOP = 'foreigners-3882.myshopify.com';
-const API = `https://${SHOP}/admin/api/2024-07/customers.json`;
+const API = `https://${SHOP}/admin/api/2026-07/customers.json`;
 
 export default async function handler(req, res) {
   if (req.method !== 'POST') {
@@ -17,7 +17,7 @@ export default async function handler(req, res) {
     return;
   }
 
-  const token = process.env.SHOPIFY_ADMIN_TOKEN;
+  const token = (process.env.SHOPIFY_ADMIN_TOKEN || '').trim();
   if (!token) {
     res.status(503).json({ ok: false, error: 'not_configured' });
     return;
