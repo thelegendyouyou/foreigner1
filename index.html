@@ -783,16 +783,18 @@ document.addEventListener('keydown',e=>{
   const px=octx.getImageData(0,0,SW,SH).data;
 
   const mobile=innerWidth<700;
-  const step=mobile?3:2;
+  // mobile : moins de particules mais plus fines — a petite echelle le semis dense
+  // sature en tache avec le blending additif
+  const step=mobile?4:2;
   const parts=[];
   for(let y=0;y<SH;y+=step)for(let x=0;x<SW;x+=step){
     if(px[(y*SW+x)*4+3]>128){
       parts.push({
-        tx:x-SW/2, ty:y-SH/2, tz:(Math.random()-.5)*52,
+        tx:x-SW/2, ty:y-SH/2, tz:(Math.random()-.5)*(mobile?22:52),
         a:Math.random()*Math.PI*2, r0:Math.random(), z0:Math.random()-.5,
         sx:0,sy:0,sz:0,
         d:Math.random()*55, ph:Math.random()*Math.PI*2,
-        sz2:.6+Math.random()*1.5, c:Math.random()
+        sz2:mobile?(.45+Math.random()*1.05):(.6+Math.random()*1.5), c:Math.random()
       });
     }
   }
@@ -828,7 +830,9 @@ document.addEventListener('keydown',e=>{
   }
   function size(){
     W=hero.clientWidth;H=hero.clientHeight;
-    DPR=Math.min(devicePixelRatio||1,W<700?1.5:2); // résolution réduite sur mobile = fluidité
+    // pleine résolution partout : avec 2x moins de particules sur mobile (step 4),
+    // le DPR 2 reste fluide et les points fins restent nets sur écran Retina
+    DPR=Math.min(devicePixelRatio||1,2);
     cv.width=W*DPR;cv.height=H*DPR;anchors();
   }
   size();addEventListener('resize',size);
@@ -887,7 +891,7 @@ document.addEventListener('keydown',e=>{
       const p=parts[i];
       const pr=Math.min(1,Math.max(0,(t-p.d)/95));
       const e=1-Math.pow(1-pr,3);
-      const fl=e*2.2;
+      const fl=e*(mob?1.3:2.2);
       let x=p.sx+(p.tx-p.sx)*e+Math.sin(t*.013+p.ph)*fl;
       let y=p.sy+(p.ty-p.sy)*e+Math.cos(t*.011+p.ph)*fl;
       let z=p.sz+(p.tz-p.sz)*e+Math.sin(t*.009+p.ph)*fl*2;
