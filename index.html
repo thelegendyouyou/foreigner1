@@ -340,11 +340,11 @@ footer .links{display:flex;gap:1.8rem}
   header{backdrop-filter:blur(8px)} /* flou allégé : le backdrop-filter coûte cher sur mobile */
   /* hero compact : le martinet a sa propre bande entre l'eyebrow et le titre.
      Seuil aligné sur celui du moteur de particules (W<700), bande proportionnelle a l'ecran. */
-  .hero{padding:5rem 0 1.75rem}
-  .hero .eyebrow{margin-bottom:clamp(96px,28vw,128px);gap:1rem}
+  .hero{padding:5rem 0 1.25rem}
+  .hero .eyebrow{margin-bottom:clamp(132px,40vw,172px);gap:1rem}
   .hero .eyebrow .mono,.hero .eyebrow{font-size:.62rem}
-  h1{font-size:clamp(2.3rem,10.8vw,9.5rem)}
-  .hero p.lead{font-size:.9rem;line-height:1.5;margin:1.2rem 0 1.4rem}
+  h1{font-size:clamp(2.2rem,10.4vw,9.5rem)}
+  .hero p.lead{font-size:.9rem;line-height:1.5;margin:1.05rem 0 1.25rem}
   .hero p.lead em{margin-top:.55rem}
   .capture input{padding:.8rem 1.1rem}
   .capture-note{margin-top:.55rem}
@@ -785,7 +785,7 @@ document.addEventListener('keydown',e=>{
   const mobile=innerWidth<700;
   // mobile : moins de particules mais plus fines — a petite echelle le semis dense
   // sature en tache avec le blending additif
-  const step=mobile?4:2;
+  const step=mobile?3:2;
   const parts=[];
   for(let y=0;y<SH;y+=step)for(let x=0;x<SW;x+=step){
     if(px[(y*SW+x)*4+3]>128){
@@ -794,7 +794,7 @@ document.addEventListener('keydown',e=>{
         a:Math.random()*Math.PI*2, r0:Math.random(), z0:Math.random()-.5,
         sx:0,sy:0,sz:0,
         d:Math.random()*55, ph:Math.random()*Math.PI*2,
-        sz2:mobile?(.45+Math.random()*1.05):(.6+Math.random()*1.5), c:Math.random()
+        sz2:mobile?(.5+Math.random()*1.1):(.6+Math.random()*1.5), c:Math.random()
       });
     }
   }
@@ -824,8 +824,8 @@ document.addEventListener('keydown',e=>{
     const bot=inner.offsetTop+h1.offsetTop;
     if(bot-top>40){
       // légèrement au-dessus du centre de la bande, sans toucher l'eyebrow
-      baseM=Math.min(W*.62/SW,(bot-top-16)/SH);
-      oyM=top+(bot-top)*.45;
+      baseM=Math.min(W*.78/SW,(bot-top-16)/SH);
+      oyM=top+(bot-top)*.5;
     }
   }
   function size(){
@@ -874,7 +874,7 @@ document.addEventListener('keydown',e=>{
     const base=mob?baseM:Math.min(Math.min(W*.55,720)/SW,(H*.68)/(SH*1.22));
     const dolly=(mob?1.08:1.22)-((mob?.08:.22))*Math.min(1,t/110);
     const scale=base*dolly;
-    let ox=W*(mob?.42:.64); // mobile : calé à gauche, aligné avec le texte
+    let ox=W*(mob?.5:.64); // mobile : centré, en emblème au-dessus du titre
     let oy=mob?oyM:H*.44;
     if(mob){ // verrou anti-coupure : la boîte de l'oiseau est ramenée dans l'écran quoi qu'il arrive
       const hw=SW*scale/2+6, hh=SH*scale/2+6;
