@@ -3,20 +3,20 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>FAQ — FOREIGNERS | Family Over Worries</title>
-<meta name="description" content="Everything about FOREIGNERS: where the 50% of profits goes, how drops work, what Family Over Worries means, and why the swift.">
-<link rel="canonical" href="https://foreigners.world/faq.html">
+<title>Contact — FOREIGNERS | Family Over Worries</title>
+<meta name="description" content="Write to FOREIGNERS: a question, an order, a collab, or just to say hi. Every foreigner belongs here — and every message gets an answer.">
+<link rel="canonical" href="https://foreigners.world/contact.html">
 <meta property="og:type" content="website">
 <meta property="og:site_name" content="FOREIGNERS">
-<meta property="og:url" content="https://foreigners.world/faq.html">
-<meta property="og:title" content="FAQ — FOREIGNERS">
-<meta property="og:description" content="Where the 50% goes, how drops work, and why the swift. Every foreigner belongs here.">
+<meta property="og:url" content="https://foreigners.world/contact.html">
+<meta property="og:title" content="Contact — FOREIGNERS">
+<meta property="og:description" content="A question, an order, a collab, or just to say hi. Every message gets an answer.">
 <meta property="og:image" content="https://foreigners.world/assets/og.jpg">
 <meta property="og:image:width" content="1200">
 <meta property="og:image:height" content="630">
 <meta name="twitter:card" content="summary_large_image">
-<meta name="twitter:title" content="FAQ — FOREIGNERS">
-<meta name="twitter:description" content="Where the 50% goes, how drops work, and why the swift.">
+<meta name="twitter:title" content="Contact — FOREIGNERS">
+<meta name="twitter:description" content="A question, an order, a collab, or just to say hi.">
 <meta name="twitter:image" content="https://foreigners.world/assets/og.jpg">
 <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='705 795 620 410'%3E%3Cg fill='%23C79A5B'%3E%3Cpath d='M1260.1,976.3C912.1,941.5,705,802.6,705,802.6s159.2,193.1,419,272.4l89.1-42.2c33.5-13.9,70,19.1,70,19.1C1319.7,984.2,1260.1,976.3,1260.1,976.3z'/%3E%3Cpath d='M865.5,1197.4l230.9-109.2c-22-7.4-43.3-15.5-63.8-24.2L865.5,1197.4z'/%3E%3C/g%3E%3C/svg%3E">
 <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -25,17 +25,10 @@
 <script type="application/ld+json">
 {
   "@context":"https://schema.org",
-  "@type":"FAQPage",
-  "mainEntity":[
-    {"@type":"Question","name":"What is FOREIGNERS?","acceptedAnswer":{"@type":"Answer","text":"FOREIGNERS is a clothing brand built on one idea: every foreigner belongs here. It was founded by foreigners, for foreigners — and for everyone who believes that no border decides someone's worth. 50% of our profits go to organizations that support newcomers and the cultures they carry."}},
-    {"@type":"Question","name":"What does Family Over Worries mean?","acceptedAnswer":{"@type":"Answer","text":"FOW — Family Over Worries — is our mantra. It means the people who hold you together come before everything that weighs you down. It's embroidered on the sleeve of our pieces, and stitched into how the brand works: half of what we earn goes back to those who arrive."}},
-    {"@type":"Question","name":"Where does the 50% actually go?","acceptedAnswer":{"@type":"Answer","text":"On every piece sold, half of the profits go to organizations that support people who just arrived: language classes, paperwork, housing, a first job, and projects that keep their cultures alive. Partner organizations are announced with every drop and chosen with the community."}},
-    {"@type":"Question","name":"How do I know you actually donate?","acceptedAnswer":{"@type":"Answer","text":"After every drop, we publish the amount donated — down to the cent — along with the name of the partner organization. No fine print, no vague percentages."}},
-    {"@type":"Question","name":"When is Drop 001?","acceptedAnswer":{"@type":"Answer","text":"Soon. Drop 001 is a limited run of four pieces: the Night Hoodie, the Sand Hoodie, the Night Sweatpants and the Signature Beanie. People on the email list get access 48 hours before everyone else — once it's gone, it's gone."}},
-    {"@type":"Question","name":"Do I have to be a foreigner to wear FOREIGNERS?","acceptedAnswer":{"@type":"Answer","text":"No. This is bigger than where you were born. Wearing FOREIGNERS means you believe we are all human, whichever side of a border we come from. Warning: compliments may occur."}},
-    {"@type":"Question","name":"Why the bird?","acceptedAnswer":{"@type":"Answer","text":"Our symbol is the swift — a bird that spends its life in flight and crosses borders without ever asking permission. Wherever it lands, it is home. Nobody asks the swift where it's really from."}},
-    {"@type":"Question","name":"How can I follow or contact you?","acceptedAnswer":{"@type":"Answer","text":"Find us on Instagram at @fowreigners, or join the email list on the homepage to get drop news first. One email only: the ones that matter."}}
-  ]
+  "@type":"ContactPage",
+  "name":"Contact — FOREIGNERS",
+  "url":"https://foreigners.world/contact.html",
+  "about":{"@type":"Organization","name":"FOREIGNERS","url":"https://foreigners.world/","sameAs":["https://www.instagram.com/fowreigners/"]}
 }
 </script>
 <style>
@@ -83,45 +76,48 @@ nav a.lnk.on{color:var(--gold)}
 .btn{
   display:inline-block;font-family:var(--mono);font-size:.72rem;letter-spacing:.2em;text-transform:uppercase;
   color:var(--ink);background:var(--gold);padding:.8rem 1.5rem;border:1px solid var(--gold);
-  cursor:pointer;transition:background .3s,color .3s;
+  cursor:pointer;transition:background .3s,color .3s,opacity .3s;
 }
 .btn:hover{background:transparent;color:var(--gold-2)}
+.btn[disabled]{opacity:.55;pointer-events:none}
 
-.hero-faq{padding:9.5rem 0 3.5rem;
+.hero-contact{padding:9.5rem 0 3rem;
   background:radial-gradient(ellipse 60% 45% at 18% 0%, rgba(199,154,91,.12), transparent 60%),var(--ink);}
-.hero-faq .eyebrow{display:flex;align-items:center;gap:1.6rem;margin-bottom:1.6rem}
+.hero-contact .eyebrow{display:flex;align-items:center;gap:1.6rem;margin-bottom:1.6rem}
 h1{font-family:var(--disp);font-weight:900;text-transform:uppercase;font-size:clamp(2.8rem,7vw,5.5rem);line-height:.95}
 h1 .g{color:var(--gold)}
-.hero-faq p.lead{max-width:36rem;margin-top:1.4rem;color:#C9BFA9}
+.hero-contact p.lead{max-width:36rem;margin-top:1.4rem;color:#C9BFA9}
 
-section.qs{padding:2rem 0 5rem}
-.qgroup{margin-top:3rem}
-.qgroup>.mono{display:block;margin-bottom:1.2rem}
-details{border-top:1px solid var(--line);transition:background .3s}
-details:last-of-type{border-bottom:1px solid var(--line)}
-details[open]{background:var(--ink-2)}
-summary{
-  cursor:pointer;list-style:none;display:flex;align-items:baseline;gap:1.2rem;
-  padding:1.4rem .4rem;font-family:var(--disp);font-weight:700;text-transform:uppercase;
-  font-size:1.25rem;letter-spacing:.04em;transition:color .3s;
+/* ============ FORMULAIRE ============ */
+section.cform{padding:1.5rem 0 5.5rem}
+form.contact{display:grid;grid-template-columns:1fr 1fr;gap:1.1rem;margin-top:2rem}
+.field{position:relative;grid-column:span 2}
+.field.half{grid-column:span 1}
+.field input,.field textarea{
+  width:100%;background:rgba(20,17,11,.6);border:1px solid var(--line-gold);
+  color:var(--sand);font-family:var(--mono);font-size:.8rem;letter-spacing:.08em;
+  padding:1.05rem 1.2rem;outline:0;border-radius:0;-webkit-appearance:none;
+  transition:border-color .3s,background .3s;
 }
-summary::-webkit-details-marker{display:none}
-summary:hover{color:var(--gold-2)}
-summary::before{
-  content:"+";flex:none;width:1.2rem;color:var(--gold);font-weight:600;
-  transition:transform .3s;transform-origin:35% 55%;
+.field textarea{min-height:9.5rem;resize:vertical;line-height:1.7}
+.field input::placeholder,.field textarea::placeholder{
+  color:var(--taupe);text-transform:uppercase;letter-spacing:.18em;
 }
-details[open] summary::before{transform:rotate(45deg)}
-details p{padding:0 .4rem 1.6rem 2.8rem;color:#BFB49D;max-width:42rem}
-details p strong{color:var(--sand);font-weight:600}
-details p a{color:var(--gold-2);border-bottom:1px solid var(--line-gold)}
-:focus-visible{outline:2px solid var(--gold);outline-offset:3px}
+.field input:focus,.field textarea:focus{border-color:var(--gold);background:rgba(29,24,16,.8)}
+.field input:focus::placeholder,.field textarea:focus::placeholder{color:rgba(199,154,91,.6)}
+.send-row{grid-column:span 2;display:flex;align-items:center;gap:1.4rem;flex-wrap:wrap;margin-top:.4rem}
+.send-row .btn{padding:.95rem 2.4rem}
+.form-note{font-family:var(--mono);font-size:.68rem;letter-spacing:.16em;text-transform:uppercase;color:var(--taupe)}
+.form-status{grid-column:span 2;display:none;border:1px solid var(--line-gold);background:var(--ink-2);
+  padding:1.2rem 1.4rem;font-family:var(--mono);font-size:.8rem;letter-spacing:.06em;color:var(--gold-2)}
+.form-status a{color:var(--gold-2);border-bottom:1px solid var(--line-gold)}
+.form-status.err{color:#D9A38F;border-color:rgba(217,163,143,.4)}
 
-.cta{border-top:1px solid var(--line);background:
-  radial-gradient(ellipse 55% 65% at 50% 110%, rgba(199,154,91,.13), transparent 65%),var(--ink-2);
-  text-align:center;padding:4.5rem 0;}
-.cta h2{font-family:var(--disp);font-weight:800;text-transform:uppercase;font-size:clamp(1.9rem,4.5vw,3rem);margin-bottom:.8rem}
-.cta p{color:#BFB49D;margin-bottom:1.8rem}
+/* autres moyens */
+.alt{border-top:1px solid var(--line);padding:2.6rem 0 0;margin-top:3.2rem;display:flex;gap:3rem;flex-wrap:wrap}
+.alt .blk .mono{display:block;margin-bottom:.5rem}
+.alt .blk a{color:var(--gold-2);border-bottom:1px solid var(--line-gold);transition:color .3s}
+.alt .blk a:hover{color:var(--gold)}
 
 footer{border-top:1px solid var(--line);padding:2.2rem 0}
 footer .wrap{max-width:1240px;display:flex;align-items:center;justify-content:space-between;gap:1.5rem;flex-wrap:wrap}
@@ -129,11 +125,12 @@ footer .links{display:flex;gap:1.8rem}
 footer a.lnk{font-family:var(--mono);font-size:.72rem;letter-spacing:.22em;text-transform:uppercase;color:var(--taupe);transition:color .3s}
 footer a.lnk:hover{color:var(--gold-2)}
 
+:focus-visible{outline:2px solid var(--gold);outline-offset:3px}
 @media(max-width:560px){
   nav a.lnk{display:none}
-  summary{font-size:1.05rem;padding:1.2rem .2rem}
-  details p{padding-left:2.4rem}
-  .hero-faq{padding:7.5rem 0 2.5rem}
+  .hero-contact{padding:7.5rem 0 2rem}
+  form.contact{grid-template-columns:1fr}
+  .field,.field.half,.send-row,.form-status{grid-column:span 1}
 }
 @media(prefers-reduced-motion:reduce){
   *,*::before,*::after{transition:none!important}
@@ -175,86 +172,52 @@ footer a.lnk:hover{color:var(--gold-2)}
   <nav>
     <a class="lnk" href="index.html#manifeste">Manifesto</a>
     <a class="lnk" href="index.html#drop">The drop</a>
-    <a class="lnk on" href="faq.html" aria-current="page">FAQ</a>
-    <a class="lnk" href="contact.html">Contact</a>
+    <a class="lnk" href="faq.html">FAQ</a>
+    <a class="lnk on" href="contact.html" aria-current="page">Contact</a>
     <a class="btn" href="index.html#rejoindre">Join us</a>
   </nav>
 </header>
 
-<section class="hero-faq">
+<section class="hero-contact">
   <div class="wrap">
-    <p class="eyebrow mono">FAQ · <b>Family Over Worries</b></p>
-    <h1>Questions, <span class="g">answered</span>.</h1>
-    <p class="lead">Everything you might want to know before the first drop : the mission, the money, the bird.</p>
+    <p class="eyebrow mono">Contact · <b>Family Over Worries</b></p>
+    <h1>Talk to the <span class="g">family</span>.</h1>
+    <p class="lead">A question, an order, a collab, or just to say hi — every message gets an answer. Wherever you're writing from, you're in the right place.</p>
   </div>
 </section>
 
-<section class="qs">
+<section class="cform">
   <div class="wrap">
+    <form class="contact" data-contact novalidate>
+      <div class="field half">
+        <input type="text" name="name" placeholder="Name" aria-label="Name" autocomplete="name" maxlength="80">
+      </div>
+      <div class="field half">
+        <input type="email" name="email" placeholder="E-mail *" aria-label="E-mail (required)" autocomplete="email" required maxlength="120">
+      </div>
+      <div class="field">
+        <input type="text" name="order" placeholder="Order number" aria-label="Order number (optional)" maxlength="40">
+      </div>
+      <div class="field">
+        <textarea name="message" placeholder="Message *" aria-label="Message (required)" required maxlength="4000"></textarea>
+      </div>
+      <div class="send-row">
+        <button class="btn" type="submit">Send</button>
+        <span class="form-note">We answer within 48h. Family first.</span>
+      </div>
+      <p class="form-status" data-status role="status"></p>
+    </form>
 
-    <div class="qgroup">
-      <span class="mono">The brand</span>
-      <details open>
-        <summary>What is FOREIGNERS's mission?</summary>
-        <p>A clothing brand built on one idea: <strong>every foreigner belongs here</strong>. FOREIGNERS exists to make inclusion feel natural. Through what we create, we invite people to see strangers differently, to move closer instead of away, and to build a culture where everyone belongs.  Oh and for those who believes that a border decides someone's
-        worth. <strong>FUCK YOU</strong>.</p>
-      </details>
-      <details>
-        <summary>What does "Family Over Worries" mean?</summary>
-        <p><strong>FOW : Family Over Worries</strong> is a reminder to choose what truly matters.
-        The people who support us, inspire us, and walk with us are worth more than the worries we carry.
-        Stitched into our pieces, it reflects the heart of FOREIGNERS.</p>
-      </details>
-      <details>
-        <summary>Do I have to be a foreigner to wear FOREIGNERS?</summary>
-        <p>No. This is bigger than where you were born. Wearing FOREIGNERS means you believe we are all
-        human, whichever side of a border we come from. <strong>Warning: compliments may occur :) </strong></p>
-      </details>
-      <details>
-        <summary>Why the bird?</summary>
-        <p>Our symbol is the <strong>swift</strong> a bird that spends its life in flight and crosses borders
-        without ever asking permission. Wherever it lands, it is home. Nobody asks the swift where
-        it's <em>really</em> from.</p>
-      </details>
+    <div class="alt">
+      <div class="blk">
+        <span class="mono">Faster</span>
+        <p>DM us on <a href="https://www.instagram.com/fowreigners/" target="_blank" rel="noopener">Instagram @fowreigners</a></p>
+      </div>
+      <div class="blk">
+        <span class="mono">Drop news</span>
+        <p><a href="index.html#rejoindre">Join the email list</a> — access 48h before everyone</p>
+      </div>
     </div>
-
-    <div class="qgroup">
-      <span class="mono">The 50%</span>
-      <details>
-        <summary>Where does the 50% actually go?</summary>
-        <p>On every piece sold, <strong>half of the profits</strong> go to organizations that support people who
-        just arrived: language classes, paperwork, housing, a first job, and projects that keep their
-        cultures alive. Partner organizations are announced with every drop and chosen with the community.</p>
-      </details>
-      <details>
-        <summary>How do I know you actually donate?</summary>
-        <p>After every drop, we publish the amount donated <strong>down to the cent</strong> along with the
-        name of the partner organization. No fine print, no vague percentages.</p>
-      </details>
-    </div>
-
-    <div class="qgroup">
-      <span class="mono">The drop</span>
-      <details>
-        <summary>When is Drop 001?</summary>
-        <p>Soon. Drop 001 is a <strong>limited run of our pieces</strong>: People on the email list get access
-        <strong>48 hours before everyone else</strong> once it's gone you will have to wait our winter collection</p>
-      </details>
-      <details>
-        <summary>How can I follow or contact you?</summary>
-        <p>Find us on Instagram at <a href="https://www.instagram.com/fowreigners/" target="_blank" rel="noopener">@fowreigners</a>,
-        or <a href="index.html#rejoindre">join the email list</a> to get drop news first.</p>
-      </details>
-    </div>
-
-  </div>
-</section>
-
-<section class="cta">
-  <div class="wrap">
-    <h2>Still curious?</h2>
-    <p>The best answers are stitched into the pieces themselves.</p>
-    <a class="btn" href="index.html#rejoindre">Get early access</a>
   </div>
 </section>
 
@@ -270,5 +233,48 @@ footer a.lnk:hover{color:var(--gold-2)}
   </div>
 </footer>
 
+<script>
+const form=document.querySelector('[data-contact]');
+const status=document.querySelector('[data-status]');
+const IG='<a href="https://www.instagram.com/fowreigners/" target="_blank" rel="noopener">@fowreigners</a>';
+
+function show(msg,err){
+  status.innerHTML=msg;
+  status.classList.toggle('err',!!err);
+  status.style.display='block';
+  status.scrollIntoView({block:'nearest',behavior:'smooth'});
+}
+
+form.addEventListener('submit',async e=>{
+  e.preventDefault();
+  const email=form.email.value.trim(), message=form.message.value.trim();
+  if(!/^[^@\s]+@[^@\s]+\.[^@\s]{2,}$/.test(email)){show('Please enter a valid e-mail address.',true);return}
+  if(!message){show('Your message is empty — tell us something.',true);return}
+  const btn=form.querySelector('.btn');
+  btn.disabled=true;btn.textContent='Sending…';
+  try{
+    const r=await fetch('/api/contact',{
+      method:'POST',
+      headers:{'Content-Type':'application/json'},
+      body:JSON.stringify({
+        name:form.name.value.trim(),
+        email,
+        order:form.order.value.trim(),
+        message
+      })
+    });
+    const d=await r.json().catch(()=>({}));
+    if(r.ok&&d.ok){
+      form.reset();
+      show('&#10003; Message sent. Welcome to the conversation — we answer within 48h.');
+    }else{
+      show('Our inbox isn\'t wired up just yet — DM us on Instagram '+IG+' and we\'ll answer fast.',true);
+    }
+  }catch(_){
+    show('Our inbox isn\'t wired up just yet — DM us on Instagram '+IG+' and we\'ll answer fast.',true);
+  }
+  btn.disabled=false;btn.textContent='Send';
+});
+</script>
 </body>
 </html>
