@@ -354,7 +354,8 @@ footer .links{display:flex;gap:1.8rem}
   nav a.lnk{display:none}
   .capture{flex-direction:column}
   .capture .btn{border-left:0;border-top:1px solid var(--line-gold);padding:1rem}
-  .stamp{display:none}
+  /* tampon rotatif : à côté du grand 50% (au lieu du coin bas-droit desktop) */
+  .stamp{bottom:auto;top:72px;right:4%;width:106px;height:106px;opacity:.85}
 }
 
 /* ============ ACCESSIBILITÉ ============ */
